@@ -113,12 +113,16 @@ for tn in o['attack-pattern']:
 
 print("Generating CSV file ...")
 with open(outfile,'w',newline='\n') as out:
-	writer = csv.DictWriter(out, ['name', 'id', 'url', 'platforms', 'kill chain phases', 'description', 'data sources', 'detection'], quoting=csv.QUOTE_ALL)
+	writer = csv.DictWriter(out, ['name', 'full_id', 'top_id', 'sub_id', 'url', 'platforms', 'kill chain phases', 'description', 'data sources', 'detection'], quoting=csv.QUOTE_ALL)
 	writer.writeheader()	
 
 	for tid in sorted(tech.keys()):
 		t = tech[tid]
 	 
+		id = tid.split('.')
+		if len(id) == 1:
+			id.append('')
+		
 		name = t[0]
 		tn = t[1]
 		mitre_url = t[2]
@@ -128,4 +132,4 @@ with open(outfile,'w',newline='\n') as out:
 		detection = t[6]
 		description = t[7]
 
-		writer.writerow({'name':name, 'id':tid, 'url':mitre_url, 'platforms':platforms, 'kill chain phases':kill_chain_phases, 'description':description, 'data sources':data_sources, 'detection':detection})
+		writer.writerow({'name':name, 'full_id':'.'.join(id), 'top_id':id[0], 'sub_id':id[1], 'url':mitre_url, 'platforms':platforms, 'kill chain phases':kill_chain_phases, 'description':description, 'data sources':data_sources, 'detection':detection})
